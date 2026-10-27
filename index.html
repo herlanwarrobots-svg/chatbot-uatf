@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingeniería Informática | Universidad Autónoma Tomás Frías - U.A.T.F.</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cinzel & Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        uatf: {
+                            blue: '#0D5287',      /* Azul Real del escudo */
+                            darknavy: '#083256',  /* Azul Marino profundo */
+                            lightnavy: '#1367A8', /* Azul claro acento */
+                            gold: '#F1C40F',      /* Dorado / Amarillo oficial */
+                            golddark: '#D4AC0D',  /* Dorado oscuro para hovers */
+                            accent: '#00C3FF',    /* Cian tecnológico */
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8fafc;
+        }
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #083256;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0D5287;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #F1C40F;
+        }
+        .glow-gold {
+            box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+        }
+        .glow-blue {
+            box-shadow: 0 0 25px rgba(13, 82, 135, 0.3);
+        }
+
+        /* Estilo para la barra deslizante (ticker de texto) de derecha a izquierda */
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker-move {
+            display: inline-block;
+            white-space: nowrap;
+            animation: ticker 18s linear infinite;
+        }
+        .ticker-move:hover {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="text-slate-800 bg-slate-50 flex flex-col min-h-screen">
+
+    <!-- CINTA ANIMADA SUPERIOR (COLOR DORADO Y MOVIMIENTO DE DERECHA A IZQUIERDA) -->
+    <div class="bg-uatf-gold text-uatf-darknavy font-extrabold text-xs md:text-sm py-1.5 border-b border-yellow-500 shadow-inner overflow-hidden cursor-pointer" onclick="toggleChatbot()">
+        <div class="ticker-wrap">
+            <div class="ticker-move uppercase tracking-widest">
+                <span class="mx-4">🔥 ¿TIENES MÁS DUDAS? 👉 PREGUNTA A ¡INFO-BOT! 🤖</span>
+                <span class="mx-4">--</span>
+                <span class="mx-4">🔥 ¿TIENES MÁS DUDAS? 👉 PREGUNTA A ¡INFO-BOT! 🤖</span>
+                <span class="mx-4">--</span>
+                <span class="mx-4">🔥 ¿TIENES MÁS DUDAS? 👉 PREGUNTA A ¡INFO-BOT! 🤖</span>
+                <span class="mx-4">--</span>
+                <span class="mx-4">🔥 ¿TIENES MÁS DUDAS? 👉 PREGUNTA A ¡INFO-BOT! 🤖</span>
+                <span class="mx-4">--</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOP HEADER -->
+    <div class="bg-uatf-darknavy text-white text-xs md:text-sm py-2 px-4 border-b border-uatf-gold/30">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center space-x-4">
+                <span class="flex items-center"><i class="fa-solid me-1.5 fa-location-dot text-uatf-gold"></i> Av. El Maestro s/n – Segundo Bloque Interior, Potosí - Bolivia</span>
+                <span class="hidden md:flex items-center"><i class="fa-solid me-1.5 fa-phone text-uatf-gold"></i> +591 (2) 622-2610</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="bg-uatf-gold/20 text-uatf-gold px-2 py-0.5 rounded border border-uatf-gold/40 text-xs font-semibold">U.A.T.F. POTOSÍ</span>
+                <span class="text-slate-300">|</span>
+                <a href="https://ingenieria-informatica-uatf.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-uatf-gold transition-colors font-medium"><i class="fa-solid fa-graduation-cap me-1"></i> Admisiones 2026</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN NAVBAR -->
+    <header class="bg-white sticky top-0 z-40 shadow-md border-b-2 border-uatf-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-24">
+                <a href="#inicio" class="flex items-center space-x-3 group">
+                    <div class="relative w-16 h-16 sm:w-16 sm:h-16 flex-shrink-0 flex items-center justify-center">
+                        <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-md">
+                            <circle cx="100" cy="100" r="92" fill="#083256" stroke="#F1C40F" stroke-width="4"/>
+                            <circle cx="100" cy="100" r="78" fill="#0D5287"/>
+                            <polygon points="20,40 100,180 100,100" fill="#0D5287" stroke="#F1C40F" stroke-width="2"/>
+                            <polygon points="180,40 100,180 100,100" fill="#F1C40F" stroke="#083256" stroke-width="2"/>
+                            <circle cx="100" cy="55" r="28" fill="#1367A8" stroke="#FFFFFF" stroke-width="2"/>
+                            <path d="M 72,55 Q 100,35 128,55 Q 100,75 72,55 Z" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+                            <line x1="100" y1="27" x2="100" y2="83" stroke="#FFFFFF" stroke-width="1.5"/>
+                            <rect x="75" y="95" width="50" height="40" rx="4" fill="#083256" stroke="#F1C40F" stroke-width="2"/>
+                            <rect x="80" y="100" width="40" height="25" rx="2" fill="#FFFFFF"/>
+                            <text x="100" y="112" font-family="Montserrat" font-size="10" font-weight="bold" fill="#083256" text-anchor="middle">U.A.T.F.</text>
+                            <text x="100" y="121" font-family="Montserrat" font-size="7" font-weight="bold" fill="#0D5287" text-anchor="middle">POTOSI</text>
+                            <path d="M 85,135 L 115,135 L 120,140 L 80,140 Z" fill="#083256"/>
+                            <text x="140" y="115" font-family="Montserrat" font-size="10" font-weight="bold" fill="#083256" transform="rotate(45 140 115)">1991</text>
+                        </svg>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <span class="font-cinzel text-lg sm:text-2xl font-black text-uatf-darknavy leading-tight tracking-wider group-hover:text-uatf-blue transition-colors">
+                            INGENIERÍA INFORMÁTICA
+                        </span>
+                        <span class="text-xs sm:text-sm font-semibold text-uatf-blue tracking-widest uppercase">
+                            Facultad de Ciencias Puras <span class="text-uatf-gold font-bold">| U.A.T.F.</span>
+                        </span>
+                    </div>
+                </a>
+
+                <nav class="hidden lg:flex space-x-1 xl:space-x-2 font-medium text-sm">
+                    <a href="#inicio" class="nav-link text-uatf-darknavy hover:text-uatf-blue hover:bg-slate-100 px-3 py-2 rounded-lg transition-all font-semibold">Inicio</a>
+                    <a href="#historia" class="nav-link text-uatf-darknavy hover:text-uatf-blue hover:bg-slate-100 px-3 py-2 rounded-lg transition-all font-semibold">Historia</a>
+                    <a href="#infraestructura" class="nav-link text-uatf-darknavy hover:text-uatf-blue hover:bg-slate-100 px-3 py-2 rounded-lg transition-all font-semibold">Ubicación</a>
+                    <a href="#plan-estudios" class="nav-link text-uatf-darknavy hover:text-uatf-blue hover:bg-slate-100 px-3 py-2 rounded-lg transition-all font-semibold">Plan de Estudio</a>
+                    <a href="#docentes" class="nav-link text-uatf-darknavy hover:text-uatf-blue hover:bg-slate-100 px-3 py-2 rounded-lg transition-all font-semibold">Docentes</a>
+                    <a href="https://ingenieria-informatica-uatf.vercel.app/" target="_blank" rel="noopener noreferrer" class="bg-uatf-gold hover:bg-uatf-golddark text-uatf-darknavy font-bold px-4 py-2 rounded-lg shadow-sm transition-all flex items-center gap-1.5 border border-uatf-golddark">
+                        <i class="fa-solid fa-user-plus"></i> Preinscríbete
+                    </a>
+                </nav>
+
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-uatf-darknavy hover:text-uatf-blue p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-uatf-gold">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-200 px-4 pt-2 pb-4 space-y-1 shadow-lg">
+            <a href="#inicio" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-uatf-darknavy hover:bg-slate-100">Inicio</a>
+            <a href="#historia" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-uatf-darknavy hover:bg-slate-100">Historia</a>
+            <a href="#infraestructura" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-uatf-darknavy hover:bg-slate-100">Ubicación e Infraestructura</a>
+            <a href="#plan-estudios" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-uatf-darknavy hover:bg-slate-100">Plan de Estudio</a>
+            <a href="#docentes" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-uatf-darknavy hover:bg-slate-100">Docentes</a>
+            <a href="https://ingenieria-informatica-uatf.vercel.app/" target="_blank" rel="noopener noreferrer" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-bold text-uatf-darknavy bg-uatf-gold text-center mt-2">Preinscríbete Aquí</a>
+        </div>
+    </header>
+
+    <!-- SECTION 1: HERO SECTION -->
+    <section id="inicio" class="relative bg-gradient-to-br from-uatf-darknavy via-uatf-blue to-uatf-darknavy text-white overflow-hidden py-16 md:py-24">
+        <div class="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#F1C40F_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 bg-uatf-gold/20 border border-uatf-gold/50 text-uatf-gold px-3.5 py-1.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider backdrop-blur-sm">
+                        <i class="fa-solid fa-award"></i> Acreditada a Nivel Nacional - U.A.T.F.
+                    </div>
+                    
+                    <h1 class="font-cinzel text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-wide">
+                        Líderes en <span class="text-transparent bg-clip-text bg-gradient-to-r from-uatf-gold to-yellow-200">Innovación Tecnológica</span> y Desarrollo
+                    </h1>
+
+                    <p class="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                        Formamos profesionales de excelencia en desarrollo de software, inteligencia artificial, redes, ciberseguridad y sistemas complejos desde Potosí para el mundo.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                        <!-- Enlace directo al formulario de preinscripción en Vercel -->
+                        <a href="https://ingenieria-informatica-uatf.vercel.app/" target="_blank" rel="noopener noreferrer" class="bg-uatf-gold hover:bg-uatf-golddark text-uatf-darknavy font-extrabold px-8 py-4 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 text-center flex items-center justify-center gap-2 text-lg border-2 border-yellow-300">
+                            <i class="fa-solid fa-user-plus"></i> Preinscríbete Aquí (PSA 2026)
+                        </a>
+                        <a href="#plan-estudios" class="bg-white/10 hover:bg-white/20 text-white font-bold px-7 py-4 rounded-xl border border-white/30 backdrop-blur-md transition-all text-center flex items-center justify-center gap-2 text-lg">
+                            <i class="fa-solid fa-book-open"></i> Ver Malla Curricular
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="bg-white/10 backdrop-blur-md border-2 border-uatf-gold/40 p-8 rounded-2xl shadow-2xl text-center max-w-sm w-full glow-gold relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-uatf-gold/20 rounded-full blur-xl"></div>
+                        
+                        <div class="w-36 h-36 mx-auto mb-4 relative">
+                            <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-xl">
+                                <circle cx="100" cy="100" r="92" fill="#083256" stroke="#F1C40F" stroke-width="5"/>
+                                <circle cx="100" cy="100" r="78" fill="#0D5287"/>
+                                <polygon points="20,40 100,180 100,100" fill="#0D5287" stroke="#F1C40F" stroke-width="2"/>
+                                <polygon points="180,40 100,180 100,100" fill="#F1C40F" stroke="#083256" stroke-width="2"/>
+                                <circle cx="100" cy="55" r="28" fill="#1367A8" stroke="#FFFFFF" stroke-width="2"/>
+                                <path d="M 72,55 Q 100,35 128,55 Q 100,75 72,55 Z" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+                                <line x1="100" y1="27" x2="100" y2="83" stroke="#FFFFFF" stroke-width="1.5"/>
+                                <rect x="75" y="95" width="50" height="40" rx="4" fill="#083256" stroke="#F1C40F" stroke-width="2"/>
+                                <rect x="80" y="100" width="40" height="25" rx="2" fill="#FFFFFF"/>
+                                <text x="100" y="112" font-family="Montserrat" font-size="10" font-weight="bold" fill="#083256" text-anchor="middle">U.A.T.F.</text>
+                                <text x="100" y="121" font-family="Montserrat" font-size="7" font-weight="bold" fill="#0D5287" text-anchor="middle">POTOSI</text>
+                            </svg>
+                        </div>
+
+                        <h3 class="font-cinzel text-xl font-bold text-white mb-1">Universidad Autónoma</h3>
+                        <p class="text-uatf-gold font-bold text-lg mb-3">Tomás Frías - Potosí</p>
+                        <div class="text-xs text-slate-300 space-y-1 border-t border-white/20 pt-3">
+                            <p class="flex justify-between"><span>Grado:</span> <strong class="text-white">Licenciatura</strong></p>
+                            <p class="flex justify-between"><span>Título:</span> <strong class="text-white">Provisión Nacional</strong></p>
+                            <p class="flex justify-between"><span>Fundación:</span> <strong class="text-uatf-gold">19 de Julio de 1991</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 pt-8 border-t border-white/10 text-center">
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                    <span class="block text-3xl sm:text-4xl font-extrabold text-uatf-gold font-cinzel">8</span>
+                    <span class="text-xs sm:text-sm text-slate-300 font-medium">Semestres (4 Años)</span>
+                </div>
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                    <span class="block text-3xl sm:text-4xl font-extrabold text-uatf-gold font-cinzel">35+</span>
+                    <span class="text-xs sm:text-sm text-slate-300 font-medium">Años de Trayectoria</span>
+                </div>
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                    <span class="block text-3xl sm:text-4xl font-extrabold text-uatf-gold font-cinzel">98%</span>
+                    <span class="text-xs sm:text-sm text-slate-300 font-medium">Empleabilidad Laboral</span>
+                </div>
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                    <span class="block text-3xl sm:text-4xl font-extrabold text-uatf-gold font-cinzel">100%</span>
+                    <span class="text-xs sm:text-sm text-slate-300 font-medium">Laboratorios Equipados</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: HISTORIA -->
+    <section id="historia" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-uatf-blue font-bold uppercase tracking-wider text-sm">Nuestra Identidad</span>
+                <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-uatf-darknavy mt-1">Historia y Fundamentos</h2>
+                <div class="w-20 h-1 bg-uatf-gold mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-4 text-slate-700 leading-relaxed">
+                    <p class="text-lg font-semibold text-uatf-blue">
+                        La Carrera de Ingeniería Informática de la U.A.T.F. fue fundada oficialmente el <span class="bg-uatf-gold/30 px-2 py-0.5 rounded text-uatf-darknavy font-bold">19 de julio de 1991</span> en la villa imperial de Potosí.
+                    </p>
+                    <p>
+                        Surgió como una respuesta estratégica a la creciente necesidad de desarrollo tecnológico e informático en el departamento de Potosí y en Bolivia. Desde sus inicios en la Facultad de Ciencias Puras, la carrera ha mantenido los más altos estándares de rigor académico y compromiso social.
+                    </p>
+                    <p>
+                        A lo largo de más de tres décadas, se han graduado cientos de ingenieros informáticos que hoy lideran empresas de software, instituciones financieras, entidades públicas y centros de investigación científica nacional e internacional.
+                    </p>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border-l-4 border-uatf-gold shadow-sm mt-4">
+                        <h4 class="font-bold text-uatf-darknavy flex items-center gap-2">
+                            <i class="fa-solid fa-scroll text-uatf-blue"></i> Misión Institucional
+                        </h4>
+                        <p class="text-sm text-slate-600 mt-1">
+                            Formar ingenieros informáticos integrales, éticos e innovadores, capaces de concebir, diseñar e implementar soluciones tecnológicas sostenibles para impulsar el progreso regional y nacional.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-lg">
+                    <h3 class="font-cinzel font-bold text-xl text-uatf-darknavy mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-timeline text-uatf-gold"></i> Hitos de Nuestra Carrera
+                    </h3>
+
+                    <div class="relative border-s-2 border-uatf-blue/30 ms-4 space-y-6">
+                        <div class="ms-6 relative">
+                            <span class="absolute -left-[31px] top-1 w-4 h-4 bg-uatf-gold rounded-full border-2 border-white ring-4 ring-uatf-gold/20"></span>
+                            <span class="text-xs font-bold text-uatf-blue bg-blue-100 px-2 py-0.5 rounded">19 de Julio, 1991</span>
+                            <h4 class="font-bold text-slate-800 text-base mt-1">Fundación Oficial U.A.T.F.</h4>
+                            <p class="text-xs text-slate-600">Aprobación del Honorable Consejo Universitario para la apertura de la carrera.</p>
+                        </div>
+
+                        <div class="ms-6 relative">
+                            <span class="absolute -left-[31px] top-1 w-4 h-4 bg-uatf-blue rounded-full border-2 border-white"></span>
+                            <span class="text-xs font-bold text-uatf-blue bg-blue-100 px-2 py-0.5 rounded">2005</span>
+                            <h4 class="font-bold text-slate-800 text-base mt-1">Implementación del Segundo Bloque</h4>
+                            <p class="text-xs text-slate-600">Inauguración de modernos laboratorios en la Av. El Maestro.</p>
+                        </div>
+
+                        <div class="ms-6 relative">
+                            <span class="absolute -left-[31px] top-1 w-4 h-4 bg-uatf-blue rounded-full border-2 border-white"></span>
+                            <span class="text-xs font-bold text-uatf-blue bg-blue-100 px-2 py-0.5 rounded">2018</span>
+                            <h4 class="font-bold text-slate-800 text-base mt-1">Rediseño Curricular por Competencias</h4>
+                            <p class="text-xs text-slate-600">Actualización del plan de estudios a 8 semestres con enfoque en Ciberseguridad e IA.</p>
+                        </div>
+
+                        <div class="ms-6 relative">
+                            <span class="absolute -left-[31px] top-1 w-4 h-4 bg-uatf-gold rounded-full border-2 border-white ring-4 ring-uatf-gold/20"></span>
+                            <span class="text-xs font-bold text-uatf-blue bg-blue-100 px-2 py-0.5 rounded">2026</span>
+                            <h4 class="font-bold text-slate-800 text-base mt-1">Acreditación y Modernización Digital</h4>
+                            <p class="text-xs text-slate-600">Consolidación como referente tecnológico en el sur de Bolivia.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: UBICACIÓN E INFRAESTRUCTURA -->
+    <section id="infraestructura" class="py-16 bg-slate-100 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-uatf-blue font-bold uppercase tracking-wider text-sm">Campus Universitario</span>
+                <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-uatf-darknavy mt-1">Ubicación e Infraestructura</h2>
+                <div class="w-20 h-1 bg-uatf-gold mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200 hover:shadow-xl transition-all">
+                    <div class="bg-uatf-darknavy p-6 text-white text-center">
+                        <i class="fa-solid fa-network-wired text-4xl text-uatf-gold mb-2"></i>
+                        <h3 class="font-bold text-xl">Lab. de Redes y Ciberseguridad</h3>
+                    </div>
+                    <div class="p-5 text-sm text-slate-600 space-y-2">
+                        <p>Equipado con routers y switches Cisco, servidores de pruebas para pruebas de penetración y simulación de redes de alta velocidad.</p>
+                        <span class="inline-block bg-slate-100 text-uatf-blue text-xs font-semibold px-2.5 py-1 rounded">Capacidad: 40 Terminales</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200 hover:shadow-xl transition-all">
+                    <div class="bg-uatf-blue p-6 text-white text-center">
+                        <i class="fa-solid fa-microchip text-4xl text-uatf-gold mb-2"></i>
+                        <h3 class="font-bold text-xl">Centro de Cómputo HPC</h3>
+                    </div>
+                    <div class="p-5 text-sm text-slate-600 space-y-2">
+                        <p>Infraestructura de procesamiento gráfico (GPU NVIDIA) orientada al desarrollo de modelos de Inteligencia Artificial y Machine Learning.</p>
+                        <span class="inline-block bg-slate-100 text-uatf-blue text-xs font-semibold px-2.5 py-1 rounded">Servidores Linux Dedicados</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200 hover:shadow-xl transition-all">
+                    <div class="bg-uatf-darknavy p-6 text-white text-center">
+                        <i class="fa-solid fa-display text-4xl text-uatf-gold mb-2"></i>
+                        <h3 class="font-bold text-xl">Aulas Digitales e Interactivas</h3>
+                    </div>
+                    <div class="p-5 text-sm text-slate-600 space-y-2">
+                        <p>Aulas dotadas de proyectores multimediales, conectividad Wi-Fi 6 de alta densidad y climatización para clases teórico-prácticas.</p>
+                        <span class="inline-block bg-slate-100 text-uatf-blue text-xs font-semibold px-2.5 py-1 rounded">2do Bloque Interior</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-start space-x-4">
+                    <div class="bg-uatf-gold/20 p-4 rounded-xl text-uatf-darknavy">
+                        <i class="fa-solid fa-map-location-dot text-3xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-uatf-darknavy">¿Dónde nos encontramos?</h4>
+                        <p class="text-sm text-slate-600 mt-1">
+                            <strong>Dirección:</strong> Av. El Maestro s/n – Segundo Bloque Interior, Edificio de Ingeniería Informática.
+                        </p>
+                        <p class="text-xs text-slate-500 mt-0.5">
+                            Potosí - Bolivia | Facultad de Ciencias Puras U.A.T.F.
+                        </p>
+                    </div>
+                </div>
+
+                <a href="https://maps.google.com/?q=UATF+Potosi" target="_blank" class="w-full md:w-auto bg-uatf-blue hover:bg-uatf-darknavy text-white text-center font-bold px-6 py-3 rounded-xl transition-all shadow text-sm whitespace-nowrap flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-directions"></i> Ver en Google Maps
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: PLAN DE ESTUDIOS -->
+    <section id="plan-estudios" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="text-uatf-blue font-bold uppercase tracking-wider text-sm">Formación Académica</span>
+                <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-uatf-darknavy mt-1">Plan de Estudio (Malla Curricular)</h2>
+                <p class="text-slate-600 text-sm mt-2">Estructura curricular optimizada a 8 Semestres (4 Años) con Menciones de Especialización.</p>
+                <div class="w-20 h-1 bg-uatf-gold mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-2 mb-6" id="semester-buttons"></div>
+
+            <div id="mencion-selector" class="hidden flex justify-center gap-3 mb-6">
+                <button onclick="setMencion('software')" id="btn-mencion-software" class="px-4 py-2 text-xs font-bold rounded-xl transition-all border bg-uatf-blue text-white border-uatf-blue shadow-md">
+                    💻 Mención Ingeniería de Software
+                </button>
+                <button onclick="setMencion('redes')" id="btn-mencion-redes" class="px-4 py-2 text-xs font-bold rounded-xl transition-all border bg-slate-100 text-uatf-darknavy border-slate-300 hover:bg-slate-200">
+                    🔒 Mención Redes y Ciberseguridad
+                </button>
+            </div>
+
+            <div id="subjects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: PLANTA ACADÉMICA -->
+    <section id="docentes" class="py-16 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="text-uatf-blue font-bold uppercase tracking-wider text-sm">Excelencia Académica</span>
+                <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-uatf-darknavy mt-1">Planta Docente Especializada</h2>
+                <div class="w-20 h-1 bg-uatf-gold mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <div class="bg-gradient-to-r from-uatf-darknavy via-uatf-blue to-uatf-darknavy text-white rounded-2xl p-8 md:p-12 shadow-xl border-2 border-uatf-gold/40 relative overflow-hidden text-center glow-blue">
+                <div class="absolute -top-12 -left-12 w-40 h-40 bg-uatf-gold/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -bottom-12 -right-12 w-40 h-40 bg-uatf-gold/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="max-w-4xl mx-auto space-y-6 relative z-10">
+                    <div class="w-16 h-16 bg-uatf-gold text-uatf-darknavy rounded-full flex items-center justify-center mx-auto text-2xl font-bold shadow-md">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+
+                    <h3 class="font-cinzel text-2xl md:text-3xl font-extrabold text-uatf-gold tracking-wide">
+                        Docentes Altamente Calificados y Especializados
+                    </h3>
+
+                    <p class="text-slate-100 text-base md:text-lg leading-relaxed font-medium">
+                        Contamos con los mejores docentes especializados en cada una de las áreas clave de la informática, sistemas, ingeniería de software, redes y ciberseguridad, garantizando una educación de vanguardia con grado de maestría y doctorado.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-white/10 text-xs sm:text-sm">
+                        <div class="bg-white/10 p-3.5 rounded-xl border border-white/10 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-uatf-gold text-lg"></i>
+                            <span class="font-semibold">Grados de Posgrado (M.Sc. & Ph.D.)</span>
+                        </div>
+                        <div class="bg-white/10 p-3.5 rounded-xl border border-white/10 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-laptop-code text-uatf-gold text-lg"></i>
+                            <span class="font-semibold">Experiencia Práctica en Industria</span>
+                        </div>
+                        <div class="bg-white/10 p-3.5 rounded-xl border border-white/10 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-microchip text-uatf-gold text-lg"></i>
+                            <span class="font-semibold">Investigación e Innovación Tecnológica</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: INSCRIPCIONES -->
+    <section id="inscripciones" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-uatf-blue font-bold uppercase tracking-wider text-sm">Admisiones 2026</span>
+                <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-uatf-darknavy mt-1">Modalidades de Ingreso y Requisitos</h2>
+                <p class="text-slate-600 text-sm mt-2">Conoce las vías de admisión oficiales e información institucional de la U.A.T.F.</p>
+                <div class="w-20 h-1 bg-uatf-gold mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-slate-50 p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-cinzel text-xl font-bold text-uatf-darknavy mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-clipboard-check text-uatf-gold"></i> Vías de Admisión
+                        </h3>
+
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl border-l-4 border-uatf-blue shadow-sm">
+                                <h4 class="font-bold text-uatf-darknavy text-base">1. Prueba de Suficiencia Académica (PSA)</h4>
+                                <p class="text-xs text-slate-600 mt-1">Examen directo presencial de áreas clave: Matemáticas, Física, Álgebra e Introducción a la Computación.</p>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-xl border-l-4 border-uatf-gold shadow-sm">
+                                <h4 class="font-bold text-uatf-darknavy text-base">2. Curso Preuniversitario (CPU)</h4>
+                                <p class="text-xs text-slate-600 mt-1">Curso intensivo de nivelación académica con duración de 2 meses antes del inicio de gestión.</p>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-xl border-l-4 border-uatf-blue shadow-sm">
+                                <h4 class="font-bold text-uatf-darknavy text-base">3. Requisitos para Postulantes</h4>
+                                <ul class="text-xs text-slate-600 mt-2 list-disc list-inside space-y-1">
+                                    <li>Fotocopia legalizada del Título de Bachiller.</li>
+                                    <li>Fotocopia simple de Cédula de Identidad vigente.</li>
+                                    <li>Certificado de Nacimiento Computarizado.</li>
+                                    <li>Comprobante de pago de valores universitarios en Caja Central U.A.T.F.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nota informativa aclarando que es puramente informativo -->
+                    <div class="bg-blue-50 border-l-4 border-uatf-blue p-3.5 rounded-lg text-xs text-slate-700 mt-6">
+                        <i class="fa-solid fa-circle-info text-uatf-blue me-1"></i> 
+                        <strong>Aviso informativo:</strong> Esta sección es de carácter orientativo para la feria académica. Las inscripciones oficiales se realizan presencialmente en las oficinas autorizadas de la U.A.T.F.
+                    </div>
+                </div>
+
+                <div class="bg-uatf-darknavy text-white p-6 sm:p-8 rounded-2xl shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-cinzel text-xl font-bold text-uatf-gold mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-clock"></i> Turnos de Clases Disponibles
+                        </h3>
+                        <p class="text-sm text-slate-200 mb-6">
+                            La carrera ofrece flexibilidad de horarios para facilitar el rendimiento de nuestros estudiantes:
+                        </p>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center bg-white/10 p-3 rounded-lg border border-white/10">
+                                <span class="font-semibold text-sm"><i class="fa-solid fa-sun text-uatf-gold me-2"></i> Turno Mañana</span>
+                                <span class="text-xs bg-uatf-gold text-uatf-darknavy font-bold px-2 py-1 rounded">08:00 - 12:00</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white/10 p-3 rounded-lg border border-white/10">
+                                <span class="font-semibold text-sm"><i class="fa-solid fa-cloud-sun text-uatf-gold me-2"></i> Turno Tarde</span>
+                                <span class="text-xs bg-uatf-gold text-uatf-darknavy font-bold px-2 py-1 rounded">14:00 - 18:00</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white/10 p-3 rounded-lg border border-white/10">
+                                <span class="font-semibold text-sm"><i class="fa-solid fa-moon text-uatf-gold me-2"></i> Turno Noche (Avanzados)</span>
+                                <span class="text-xs bg-uatf-gold text-uatf-darknavy font-bold px-2 py-1 rounded">18:30 - 21:30</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-white/10 text-center">
+                        <p class="text-xs text-slate-300 mb-3">¿Tienes dudas sobre los requisitos o fechas?</p>
+                        <button onclick="openChatWithQuery('¿Cuáles son los requisitos y fechas de la Prueba de Suficiencia Académica PSA?')" class="w-full bg-uatf-gold hover:bg-uatf-golddark text-uatf-darknavy font-extrabold py-3 rounded-xl transition-all shadow text-sm">
+                            <i class="fa-solid fa-comments me-1"></i> Consultar al InfoBot U.A.T.F.
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-uatf-darknavy text-white pt-12 pb-6 border-t-4 border-uatf-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-uatf-gold rounded-full flex items-center justify-center font-bold text-uatf-darknavy font-cinzel text-lg">
+                            U
+                        </div>
+                        <span class="font-cinzel text-lg font-bold text-white">U.A.T.F. POTOSÍ</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Carrera de Ingeniería Informática. Facultad de Ciencias Puras. Acreditada para la excelencia científica y profesional.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-uatf-gold text-sm uppercase mb-3">Enlaces Rápidos</h4>
+                    <ul class="text-xs space-y-2 text-slate-300">
+                        <li><a href="#inicio" class="hover:text-uatf-gold transition-colors">Inicio</a></li>
+                        <li><a href="#historia" class="hover:text-uatf-gold transition-colors">Historia y Fundación</a></li>
+                        <li><a href="#plan-estudios" class="hover:text-uatf-gold transition-colors">Plan de Estudios 8 Semestres</a></li>
+                        <li><a href="https://ingenieria-informatica-uatf.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-uatf-gold transition-colors font-bold text-uatf-gold">Formulario de Preinscripción</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-uatf-gold text-sm uppercase mb-3">Contacto Directo</h4>
+                    <ul class="text-xs space-y-2 text-slate-300">
+                        <li><i class="fa-solid fa-location-dot text-uatf-gold me-1"></i> Av. El Maestro s/n – 2do Bloque</li>
+                        <li><i class="fa-solid fa-city text-uatf-gold me-1"></i> Potosí - Bolivia</li>
+                        <li><i class="fa-solid fa-phone text-uatf-gold me-1"></i> Teléfono: +591 (2) 622-2610</li>
+                        <li><i class="fa-solid fa-envelope text-uatf-gold me-1"></i> informatica@uatf.edu.bo</li>
+                    </ul>
+                </div>
+
+                <!-- REDES SOCIALES -->
+                <div>
+                    <h4 class="font-bold text-uatf-gold text-sm uppercase mb-3">Redes Sociales</h4>
+                    <div class="flex space-x-3 text-lg">
+                        <a href="https://www.facebook.com/share/1GG4uHZwYq/" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-uatf-gold hover:text-uatf-darknavy flex items-center justify-center transition-all" title="Facebook Oficial">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@ing.informatica?_r=1&_t=ZS-9ArscqDEcP0" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-uatf-gold hover:text-uatf-darknavy flex items-center justify-center transition-all" title="TikTok Oficial">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-6 text-center text-xs text-slate-400">
+                <p>&copy; 2026 Carrera de Ingeniería Informática - Universidad Autónoma Tomás Frías (U.A.T.F.). Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WIDGET CHATBOT INTERACTIVO -->
+    <div id="chatbot-container" class="fixed bottom-5 right-5 z-50">
+        <button id="chatbot-toggle-btn" onclick="toggleChatbot()" class="bg-uatf-blue hover:bg-uatf-darknavy text-white p-4 rounded-full shadow-2xl transition-all transform hover:scale-110 border-2 border-uatf-gold flex items-center justify-center glow-gold">
+            <i class="fa-solid fa-robot text-2xl text-uatf-gold"></i>
+            <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white"></span>
+        </button>
+
+        <div id="chatbot-window" class="hidden absolute bottom-16 right-0 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border-2 border-uatf-blue overflow-hidden flex flex-col h-[540px]">
+            <div class="bg-gradient-to-r from-uatf-darknavy to-uatf-blue text-white p-4 flex items-center justify-between border-b-2 border-uatf-gold">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 bg-uatf-gold rounded-full flex items-center justify-center text-uatf-darknavy font-bold shadow-md">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm leading-tight">InfoBot Gemini U.A.T.F. 🎓</h4>
+                        <span class="text-[10px] text-green-300 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-ping"></span> Inteligencia Artificial Activa
+                        </span>
+                    </div>
+                </div>
+                <button onclick="toggleChatbot()" class="text-white/80 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs bg-slate-50">
+                <div class="flex items-start space-x-2">
+                    <div class="w-7 h-7 bg-uatf-blue text-white rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-1">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-2xl rounded-tl-none shadow-sm border border-slate-200 text-slate-700 max-w-[88%] leading-relaxed">
+                        <p class="font-bold text-uatf-darknavy mb-1">¡Hola colegial! 🎓🤖</p>
+                        <p>Estoy conectado directamente con **Gemini AI**. Pregúntame lo que quieras sobre la carrera, el examen PSA o pide el código secreto.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTENEDOR DE 3 SUGERENCIAS DINÁMICAS (DE 12 TOTALES) -->
+            <div id="quick-suggestions" class="p-2 bg-slate-100 border-t border-slate-200 flex flex-wrap gap-1 max-h-28 overflow-y-auto"></div>
+
+            <div class="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
+                <input id="chat-input" type="text" placeholder="Pregúntale algo a Gemini..." class="flex-1 text-xs border border-slate-300 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-uatf-blue" onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()" class="bg-uatf-blue hover:bg-uatf-darknavy text-white p-2.5 rounded-xl shadow"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE CONEXIÓN CON GEMINI Y SUGERENCIAS DINÁMICAS -->
+    <script>
+        const curriculumData = {
+            1: [
+                { code: 'MAT 110', name: 'ÁLGEBRA Y MATEMÁTICA DISCRETA', pre: 'Ninguno' },
+                { code: 'INF 120', name: 'FUNDAMENTOS DE PROGRAMACIÓN', pre: 'Ninguno' },
+                { code: 'INF 130', name: 'FUNDAMENTOS DE SISTEMAS OPERATIVOS', pre: 'Ninguno' },
+                { code: 'INF 131', name: 'ARQUITECTURA Y MANTENIMIENTO DE COMPUTADORAS', pre: 'Ninguno' },
+                { code: 'INF 160', name: 'DISEÑO GRÁFICO Y MULTIMEDIA', pre: 'Ninguno' },
+                { code: 'INF 190', name: 'PRINCIPIOS DE LA INVESTIGACIÓN CIENTÍFICA Y HERRAMIENTAS IA', pre: 'Ninguno' }
+            ],
+            2: [
+                { code: 'MAT 210', name: 'ESTADÍSTICA Y PROBABILIDADES', pre: 'MAT 110' },
+                { code: 'INF 220', name: 'PROGRAMACIÓN ORIENTADA A OBJETOS', pre: 'INF 120' },
+                { code: 'INF 230', name: 'PROGRAMACIÓN EN SISTEMAS OPERATIVOS', pre: 'INF 130' },
+                { code: 'INF 260', name: 'UI/UX INTERFAZ Y EXPERIENCIA DE USUARIO', pre: 'INF 160' },
+                { code: 'INF 290', name: 'CONTABILIDAD', pre: 'Ninguno' },
+                { code: 'LIN 291', name: 'TALLER DE INGLÉS TÉCNICO', pre: 'Ninguno' }
+            ],
+            3: [
+                { code: 'MAT 310', name: 'CÁLCULO I', pre: 'MAT 110' },
+                { code: 'MAT 311', name: 'ÁLGEBRA LINEAL Y OPTIMIZACIÓN', pre: 'MAT 110' },
+                { code: 'INF 320', name: 'PROGRAMACIÓN FUNCIONAL', pre: 'INF 220' },
+                { code: 'INF 330', name: 'GESTIÓN EN SISTEMAS OPERATIVOS', pre: 'INF 230' },
+                { code: 'INF 340', name: 'FUNDAMENTOS DE BASE DE DATOS', pre: 'INF 220' },
+                { code: 'INF 350', name: 'FUNDAMENTOS DE REDES', pre: 'INF 230' }
+            ],
+            4: [
+                { code: 'FIS 411', name: 'FÍSICA COMPUTACIONAL', pre: 'MAT 310' },
+                { code: 'INF 420', name: 'PROGRAMACIÓN DE APLICACIONES DE ESCRITORIO', pre: 'INF 320' },
+                { code: 'INF 421', name: 'PROGRAMACIÓN DINÁMICA Y GRAFOS', pre: 'INF 320' },
+                { code: 'INF 440', name: 'FUNDAMENTOS DE PROGRAMABILIDAD EN SISTEMAS DE GESTIÓN EN BASE DE DATOS', pre: 'INF 340' },
+                { code: 'INF 460', name: 'DESARROLLO WEB FRONT-END', pre: 'INF 260' }
+            ],
+            5: [
+                { code: 'INF 520', name: 'PROGRAMACIÓN DE MODELOS Y SIMULACIÓN', pre: 'MAT 210' },
+                { code: 'INF 540', name: 'BASE DE DATOS NO RELACIONALES', pre: 'INF 440' },
+                { code: 'INF 550', name: 'DISEÑO Y CABLEADO ESTRUCTURADO', pre: 'INF 350' },
+                { code: 'INF 551', name: 'BASES Y ESTRUCTURAS DE INTERNET DE LAS COSAS', pre: 'INF 350' },
+                { code: 'INF 560', name: 'DESARROLLO WEB BACK-END', pre: 'INF 460' },
+                { code: 'INF 561', name: 'ANÁLISIS DE SISTEMAS DE INFORMACIÓN', pre: 'INF 460' }
+            ],
+            6: {
+                software: [
+                    { code: 'INF 650', name: 'SENSORIZACION Y AUTOMATIZACION INTERNET DE LA COSA', pre: 'INF 551' },
+                    { code: 'INF 660', name: 'GESTION DE DESARROLLO DE SOFTWARE', pre: 'INF 561' },
+                    { code: 'INF 661', name: 'PROGRAMACION Y ANIMACION DIGITAL', pre: 'INF 460' },
+                    { code: 'INF 662', name: 'DESARROLLO DE APLICACIONES MOVILES', pre: 'INF 560' },
+                    { code: 'INF 663', name: 'DISEÑO Y ARQUITECTURA DE SOFTWARE', pre: 'INF 561' },
+                    { code: 'INF 690', name: 'PRÁCTICA LABORAL', pre: 'Aprob. 5to Sem.' }
+                ],
+                redes: [
+                    { code: 'INF 650', name: 'SENSORIZACION Y AUTOMATIZACION INTERNET DE LA COSA', pre: 'INF 551' },
+                    { code: 'INF 651', name: 'CONMUTACION, ENRUTAMIENTO Y REDES INHALAMBRIDAS', pre: 'INF 550' },
+                    { code: 'INF 652', name: 'SISTEMAS Y SERVICIOS VIRTUALES', pre: 'INF 550' },
+                    { code: 'INF 664', name: 'PROGRAMACION EN REDES', pre: 'INF 560' },
+                    { code: 'INF 681', name: 'CIBERSEGURIDAD', pre: 'INF 550' },
+                    { code: 'INF 690', name: 'PRACTICA LABORAL', pre: 'Aprob. 5to Sem.' }
+                ]
+            },
+            7: {
+                software: [
+                    { code: 'INF 761', name: 'DESARROLLO DE VIDEO JUEGOS', pre: 'INF 661' },
+                    { code: 'INF 762', name: 'CALIDAD DE SOFTWARE', pre: 'INF 663' },
+                    { code: 'INF 780', name: 'VERIFICACION Y VALIDACION DE SW', pre: 'INF 663' },
+                    { code: 'INF 781', name: 'TALLER DE DESARROLLO DE SW', pre: 'INF 660' },
+                    { code: 'INF 790', name: 'METODOLOGIA DE A INVESTIGACION', pre: 'INF 690' }
+                ],
+                redes: [
+                    { code: 'INF 750', name: 'REDES EMPRESARIALES', pre: 'INF 651' },
+                    { code: 'INF 751', name: 'GESTION Y ANALISIS DE REDES', pre: 'INF 651' },
+                    { code: 'INF 752', name: 'REDES DE ACCESO', pre: 'INF 651' },
+                    { code: 'INF 782', name: 'ETHICAL HACKING', pre: 'INF 681' },
+                    { code: 'INF 790', name: 'METODOLOGIA DE A INVESTIGACION', pre: 'INF 690' }
+                ]
+            },
+            8: [
+                { code: 'INF 840', name: 'INFORMÁTICA FORENSE', pre: 'Aprob. 7mo Sem.' },
+                { code: 'INF 841', name: 'AUDITORÍA INFORMÁTICA', pre: 'Aprob. 7mo Sem.' },
+                { code: 'INF 871', name: 'PREPARACIÓN Y EVALUACIÓN DE PROYECTOS', pre: 'INF 790' },
+                { code: 'INF 872', name: 'HERRAMIENTAS DIGITALES PARA EMPRENDIMIENTOS', pre: 'Aprob. 7mo Sem.' }
+            ]
+        };
+
+        // BANCO AMPLIADO A 12 PREGUNTAS EN TOTAL
+        const allSuggestions = [
+            { text: "🚀 Malla 8 Semestres", query: "¿Cuál es la novedad de la nueva malla curricular?" },
+            { text: "🎓 Becas U.A.T.F.", query: "¿Qué becas ofrece la universidad?" },
+            { text: "💻 Mención Software", query: "¿Qué se aprende en la Mención de Ingeniería de Software?" },
+            { text: "🔒 Mención Redes", query: "¿De qué trata la Mención de Redes y Ciberseguridad?" },
+            { text: "📝 Requisitos PSA", query: "¿Cuáles son los requisitos para inscribirme a la Prueba de Suficiencia Académica?" },
+            { text: "🧠 ¿Saber programar?", query: "¿Necesito saber programar antes de entrar a la carrera?" },
+            { text: "💰 Campo Laboral", query: "¿Cómo es el campo laboral y el trabajo remoto para ingenieros informáticos?" },
+            { text: "🖥️ Laboratorios", query: "¿Cómo son los laboratorios de computación y redes?" },
+            { text: "⏰ Turnos de Clases", query: "¿Qué turnos de clases están disponibles?" },
+            { text: "💵 Costos e Inscripción", query: "¿Tiene algún costo el examen de admisión o la matrícula?" },
+            { text: "📚 Primer Semestre", query: "¿Qué materias llevaré en mi primer semestre?" },
+            { text: "📜 Modalidad Titulación", query: "¿Cuáles son las modalidades de graduación o titulación?" }
+        ];
+
+        let activeSemester = 1;
+        let activeMencion = 'software';
+        let chatHistory = [];
+
+        function renderSemesterButtons() {
+            const container = document.getElementById('semester-buttons');
+            const mencionSelector = document.getElementById('mencion-selector');
+            if(!container) return;
+
+            container.innerHTML = '';
+            if (activeSemester === 6 || activeSemester === 7) {
+                mencionSelector.classList.remove('hidden');
+            } else {
+                mencionSelector.classList.add('hidden');
+            }
+
+            for (let i = 1; i <= 8; i++) {
+                const btn = document.createElement('button');
+                btn.className = `px-4 py-2 text-xs font-bold rounded-xl transition-all border ${
+                    activeSemester === i
+                        ? 'bg-uatf-blue text-white border-uatf-blue shadow-md scale-105'
+                        : 'bg-slate-100 text-uatf-darknavy border-slate-300 hover:bg-slate-200'
+                }`;
+                btn.innerText = `Semestre ${i}`;
+                btn.onclick = () => {
+                    activeSemester = i;
+                    renderSemesterButtons();
+                    renderSubjects();
+                };
+                container.appendChild(btn);
+            }
+        }
+
+        function setMencion(mencion) {
+            activeMencion = mencion;
+            const btnSoftware = document.getElementById('btn-mencion-software');
+            const btnRedes = document.getElementById('btn-mencion-redes');
+
+            if (mencion === 'software') {
+                btnSoftware.className = "px-4 py-2 text-xs font-bold rounded-xl transition-all border bg-uatf-blue text-white border-uatf-blue shadow-md";
+                btnRedes.className = "px-4 py-2 text-xs font-bold rounded-xl transition-all border bg-slate-100 text-uatf-darknavy border-slate-300 hover:bg-slate-200";
+            } else {
+                btnRedes.className = "px-4 py-2 text-xs font-bold rounded-xl transition-all border bg-uatf-blue text-white border-uatf-blue shadow-md";
+                btnSoftware.className = "px-4 py-2 text-xs font-bold rounded-xl transition-all border bg-slate-100 text-uatf-darknavy border-slate-300 hover:bg-slate-200";
+            }
+            renderSubjects();
+        }
+
+        function renderSubjects() {
+            const container = document.getElementById('subjects-container');
+            if(!container) return;
+            container.innerHTML = '';
+
+            let subjects = [];
+            if (activeSemester === 6 || activeSemester === 7) {
+                subjects = curriculumData[activeSemester][activeMencion];
+            } else {
+                subjects = curriculumData[activeSemester];
+            }
+
+            subjects.forEach(subject => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50 border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-all border-t-4 border-t-uatf-blue';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="bg-uatf-blue/10 text-uatf-blue text-xs font-bold px-2 py-0.5 rounded">${subject.code}</span>
+                    </div>
+                    <h4 class="font-bold text-uatf-darknavy text-base mb-2">${subject.name}</h4>
+                    <p class="text-xs text-slate-500"><strong>Prerrequisito:</strong> ${subject.pre}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // RENDERIZA EXACTAMENTE 3 SUGERENCIAS ALEATORIAS CADA VEZ
+        function renderDynamicSuggestions() {
+            const container = document.getElementById('quick-suggestions');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const shuffled = [...allSuggestions].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 3);
+
+            selected.forEach(item => {
+                const btn = document.createElement('button');
+                const isGold = Math.random() > 0.5;
+                btn.className = isGold 
+                    ? "text-[10px] bg-uatf-gold text-uatf-darknavy font-bold px-2.5 py-1 rounded-full shadow-sm hover:bg-uatf-golddark transition-all"
+                    : "text-[10px] bg-white border border-uatf-blue/30 text-uatf-darknavy px-2.5 py-1 rounded-full hover:bg-uatf-blue hover:text-white transition-all";
+                
+                btn.innerText = item.text;
+                btn.onclick = () => sendQuickQuery(item.query);
+                container.appendChild(btn);
+            });
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        function toggleChatbot() {
+            document.getElementById('chatbot-window').classList.toggle('hidden');
+        }
+
+        function openChatWithQuery(queryText) {
+            const chatWin = document.getElementById('chatbot-window');
+            if (chatWin.classList.contains('hidden')) chatWin.classList.remove('hidden');
+            addUserMessage(queryText);
+            processGeminiQuery(queryText);
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (text !== '') {
+                addUserMessage(text);
+                input.value = '';
+                processGeminiQuery(text);
+            }
+        }
+
+        function sendQuickQuery(text) {
+            addUserMessage(text);
+            processGeminiQuery(text);
+        }
+
+        function addUserMessage(text) {
+            const container = document.getElementById('chat-messages');
+            const userDiv = document.createElement('div');
+            userDiv.className = 'flex items-start justify-end space-x-2';
+            userDiv.innerHTML = `<div class="bg-uatf-blue text-white p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%]" style="word-break: break-word;"><p>${text}</p></div>`;
+            container.appendChild(userDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            const container = document.getElementById('chat-messages');
+            let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            const botDiv = document.createElement('div');
+            botDiv.className = 'flex items-start space-x-2 mt-2';
+            botDiv.innerHTML = `
+                <div class="w-7 h-7 bg-uatf-blue text-white rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-1">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="bg-white p-3.5 rounded-2xl rounded-tl-none shadow-sm border border-slate-200 text-slate-700 max-w-[88%] leading-relaxed space-y-2" style="word-break: break-word;">
+                    <p>${formattedText}</p>
+                </div>
+            `;
+            container.appendChild(botDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // PETICIÓN AL BACKEND MANTENIENDO LA RUTA LOCAL DE PRUEBA
+        async function processGeminiQuery(userQuery) {
+            try {
+                const container = document.getElementById('chat-messages');
+                const loadingId = 'loading-' + Date.now();
+                const loadingDiv = document.createElement('div');
+                loadingDiv.id = loadingId;
+                loadingDiv.className = 'flex items-start space-x-2 mt-2';
+                loadingDiv.innerHTML = `
+                    <div class="w-7 h-7 bg-uatf-blue text-white rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-1">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-2xl rounded-tl-none shadow-sm border border-slate-200 text-slate-500 text-xs italic">
+                        InfoBot está pensando... ⏳
+                    </div>
+                `;
+                container.appendChild(loadingDiv);
+                container.scrollTop = container.scrollHeight;
+
+                const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: userQuery, history: chatHistory })
+                });
+
+                document.getElementById(loadingId).remove();
+
+                const data = await res.json();
+
+                if(data.response) {
+                    chatHistory.push({ role: 'user', parts: [{ text: userQuery }] });
+                    chatHistory.push({ role: 'model', parts: [{ text: data.response }] });
+                    addBotMessage(data.response);
+                    renderDynamicSuggestions();
+                } else {
+                    addBotMessage("Lo siento, tuve un problema al consultar con Gemini.");
+                }
+            } catch (err) {
+                document.querySelectorAll('[id^="loading-"]').forEach(el => el.remove());
+                addBotMessage("⚠️ No se pudo conectar con el servidor backend en `http://localhost:3000`. Asegúrate de iniciar tu servidor Node.js.");
+            }
+        }
+
+        window.onload = function() {
+            renderSemesterButtons();
+            renderSubjects();
+            renderDynamicSuggestions();
+        };
+    </script>
+</body>
+</html>
