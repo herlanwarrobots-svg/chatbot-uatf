@@ -69,6 +69,9 @@ app.post('/api/chat', async (req, res) => {
         res.status(500).json({ error: "Ocurrió un error al procesar la respuesta." });
     }
 });
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor del InfoBot corriendo en el puerto ${PORT}`));
